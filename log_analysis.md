@@ -191,7 +191,7 @@ The final 5xx failures are distributed as follows:
 | `/`        |           10 |
 | **Total**  |       **95** |
 
-### Incident 1 — app-01 connectivity failure
+### Incident 1 — app-02 connectivity failure
 
 The first major incident starts around:
 
@@ -384,7 +384,7 @@ GET /missing
 
 The 404 is an expected missing-resource response rather than an infrastructure failure.
 
-### 11:05 — app-01 connectivity failure begins
+### 11:05 — app-02 connectivity failure begins
 
 At:
 
