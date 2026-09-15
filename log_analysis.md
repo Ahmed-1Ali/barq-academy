@@ -55,7 +55,8 @@ The malformed line is line 401:
 {"timestamp":"2026-08-20T11:17:00Z","event":
 ```
 
-The application log does not contain duplicate request IDs.
+The application log has no exact duplicate records. The same request ID can appear in multiple events for one request.
+ya3ny malafat el Application Log mafihosh records metkarra bel shakl el motabe2, bas momken nafs el Request ID yezhar fe aktar men Event le nafs el Request
 
 ### error.log
 
@@ -347,12 +348,11 @@ upstream_status = "502, 200"
 
 For example:
 
-```text
-request_id: lab-000124
-path: /ready
-final status: 200
-upstream_status: 502, 200
-```
+Awal mo7awala leltalab fashlet, bas NGINX 3amel retry w nege7et el mo7awala el tanyia, fa el most5dem estalam response naga7a
+
+The retry pattern is identified by access-log records with:
+
+upstream_status = "502, 200"
 
 This means the first upstream attempt failed with `502`, and NGINX retried another upstream which returned `200`.
 
@@ -361,9 +361,6 @@ Therefore:
 ```text
 Requests retried:              19
 Successful after retry:        19
-```
-
-These requests count once in the client-request total and once in the final `200` status count.
 
 ---
 
@@ -418,7 +415,8 @@ This establishes a connectivity failure between NGINX and the affected upstream.
 
 ### 11:05–11:09 — NGINX retries healthy upstream
 
-Requests continue to be served by app-02.
+Requests continue to be served by app-01 while app-02 is unavailable.
+Ya3ny en el Requestat betefdal troo7 3ala app-01 7atta law app-02 mesh sh8al
 
 Several access records show:
 
