@@ -32,7 +32,6 @@ def run_command(command):
 def docker_state(container):
     code, output, error = run_command(
         [
-            "sudo",
             "docker",
             "inspect",
             "-f",
@@ -48,7 +47,6 @@ def docker_state(container):
 def docker_health(container):
     code, output, error = run_command(
         [
-            "sudo",
             "docker",
             "inspect",
             "-f",
@@ -186,7 +184,7 @@ def main():
     print("--- Simulating app-01 failure ---")
 
     code, output, error = run_command(
-        ["sudo", "docker", "stop", "app-01"]
+        ["docker", "stop", "app-01"]
     )
 
     if code != 0:
@@ -230,7 +228,7 @@ def main():
         print("--- Restoring app-01 ---")
 
         code, output, error = run_command(
-            ["sudo", "docker", "start", "app-01"]
+            ["docker", "start", "app-01"]
         )
 
         if code != 0:
@@ -278,7 +276,7 @@ def main():
         if docker_state("app-01") != "running":
             print()
             print("Cleanup: starting app-01")
-            run_command(["sudo", "docker", "start", "app-01"])
+            run_command(["docker", "start", "app-01"])
 
         if docker_state("app-01") == "running":
             wait_for_healthy("app-01")
