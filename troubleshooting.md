@@ -270,25 +270,33 @@ filesystem.
 
 ### Symptom
 
-The first implementation of validate.py reported failures even though parts of
-the environment were functioning correctly.
+The first implementation of validate.py reported failures even though the
+application and Docker environment were functioning correctly.
 
 ### Investigation
 
-The validator incorrectly treated an internal Docker port declaration such as
-8080/tcp as a published host port.
+The validator used `sudo docker` commands. This worked in some environments
+but failed in the assessment environment because Docker CLI access was already
+available directly.
 
-It also expected a NGINX healthcheck that was not present in the Compose
-configuration.
+The validator also incorrectly treated an internal Docker port declaration such
+as `8080/tcp` as a published host port. This could report a false failure for
+the requirement that application, PostgreSQL, and Redis ports must not be
+published to the host.
 
-An application network endpoint was also temporarily inconsistent during the
-earlier NGINX investigation.
+### Root cause
+
+The validation script had two incorrect assumptions:
+
+1. Docker CLI commands were unnecessarily prefixed with `sudo`.
+2. Container ports were not distinguished from published host ports.
 
 ### Fix
 
 The validator was corrected to:
 
-- distinguish container ports from published host ports;
+- use the Docker CLI directly;
+- distinguish internal container ports from published host ports;
 - verify the actual NGINX public binding;
 - validate Docker network membership;
 - validate backend network isolation;
@@ -297,14 +305,16 @@ The validator was corrected to:
 
 ### Verification
 
-The final validation run reported:
+The corrected validation script was executed successfully:
 
 === VALIDATION PASSED ===
 All required checks passed.
 
+The same validation script also passed in GitHub Actions after the fix.
+
 ### Commit
 
-5ea6189 - Implement environment validation
+ce76f89 - Sala7t el validation script 3ashan yesta5dem Docker CLI 3ala tool badal ma ye3tamed 3ala sudo
 
 ---
 
