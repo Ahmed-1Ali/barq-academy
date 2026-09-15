@@ -74,7 +74,6 @@ def wait_for_public_access():
 def container_health(container):
     code, output, error = run_command(
         [
-            "sudo",
             "docker",
             "inspect",
             "-f",
@@ -92,7 +91,6 @@ def container_health(container):
 def container_running(container):
     code, output, error = run_command(
         [
-            "sudo",
             "docker",
             "inspect",
             "-f",
@@ -110,7 +108,6 @@ def container_running(container):
 def get_container_ports(container):
     code, output, error = run_command(
         [
-            "sudo",
             "docker",
             "inspect",
             "-f",
@@ -154,7 +151,6 @@ def has_host_port(port_data):
 def get_networks(container):
     code, output, error = run_command(
         [
-            "sudo",
             "docker",
             "inspect",
             "-f",
@@ -175,7 +171,6 @@ def get_networks(container):
 def get_network_internal(network):
     code, output, error = run_command(
         [
-            "sudo",
             "docker",
             "network",
             "inspect",
