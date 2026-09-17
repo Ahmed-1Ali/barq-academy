@@ -1,35 +1,31 @@
 # Evidence and submission index
 
 This index maps assessment requirements to repository evidence, implementation
-commits, and the final video demonstration.
+commits, verification results, and the final video demonstration.
 
-The final submission fields that depend on the recorded challenge are left
-pending until the challenge is performed in the final video working copy.
+Final submission fields that depend on the recorded challenge remain pending
+until the final video working copy is completed.
 
 ## Submission information
 
-* **Repository URL:** PENDING — fill with final repository URL before submission.
+* **Repository URL:** PENDING — record the final repository URL before submission.
 * **Final commit:** PENDING — final commit after the 8090/three-instance video work.
-* **Matching CI run:** PENDING — record the successful CI workflow run matching
-  the final commit.
-* **Continuous 12-18 minute video URL:** PENDING — record the final continuous
-  video URL.
-* **Challenge receipt ID:** PENDING — record the receipt produced by the first
-  `./video_challenge.sh` execution during the final video.
-* **Starting video commit:** PENDING — record the commit/working state used at
-  the beginning of the final video.
-* **Later documentation-only commits, if any:** PENDING — record any commits
-  made after the video that only correct documentation/evidence.
+* **Matching CI run:** PENDING — record the successful CI workflow run matching the final commit.
+* **Continuous 12-18 minute video URL:** PENDING — record the final continuous video URL.
+* **Challenge receipt ID:** PENDING — record the receipt produced by the first `./video_challenge.sh` execution during the final video.
+* **Starting video commit:** PENDING — record the commit/working state used at the beginning of the final video.
+* **Later documentation-only commits, if any:** PENDING — record any commits made after the video that only correct documentation/evidence.
 
 ## Requirement evidence
 
 ### Git history and progressive commits
 
-* **Requirement:** Preserve the baseline and make meaningful progressive
-  commits.
+* **Requirement:** Preserve the baseline and make meaningful progressive commits.
+
 * **Evidence:** `git log --oneline --decorate --all`
-* **Relevant commits:** The implementation history from the starter release
-  through the current `main` branch, including:
+
+* **Relevant commits:** The implementation history from the starter release through
+  the current `main` branch, including:
 
   * `69cfc02 Initial commit`
   * `ca25803 Fix application healthcheck endpoint`
@@ -47,16 +43,23 @@ pending until the challenge is performed in the final video working copy.
   * `5ea6189 Implement environment validation`
   * `d906c2b Implement backend failure recovery test`
   * `7183645 Document correlated log analysis`
+  * `ce76f89 Sala7t el validation script 3ashan yesta5dem Docker CLI 3ala tool badal ma ye3tamed 3ala sudo`
+  * `6083463 Sala7t el failure recovery test.py 3ashan este5dem Docker CLI badal sudo`
+  * `8972eab Clarify log analysis retry and request ID evidence`
+  * `a1eae2c Update el-validation troubleshooting evidence`
+  * `e6c7835 Add 2 architecture diagram`
+  * `cade98c Fix CI-Workflow service`
+
 * **Video timestamp:** PENDING.
 
 ### Docker and Compose architecture
 
-* **Requirement:** Two Flask instances behind NGINX with PostgreSQL and
-  Redis, with only NGINX publicly exposed.
+* **Requirement:** Two Flask instances behind NGINX with PostgreSQL and Redis,
+  with only NGINX publicly exposed in the pre-video assessment environment.
 * **Evidence:** `Dockerfile`, `docker-compose.yml`, `nginx/nginx.conf`,
   `app/server.py`
-* **Relevant commits:** `f76b6e7`, `2809883`, `2029857`
-* **Verification:** `./validate.py`
+* **Relevant commits:** `403d0f2`, `2809883`, `2029857`
+* **Verification:** `./validate.py` completed successfully.
 * **Video timestamp:** PENDING.
 
 ### Required HTTP endpoints
@@ -65,7 +68,7 @@ pending until the challenge is performed in the final video working copy.
   `/counter`.
 * **Evidence:** `app/server.py`
 * **Verification:** `./validate.py`
-* **Relevant commit:** `5ea6189`
+* **Relevant commits:** `ca25803`, `5ea6189`
 * **Video timestamp:** PENDING.
 
 ### Distinct application identities and load balancing
@@ -73,7 +76,7 @@ pending until the challenge is performed in the final video working copy.
 * **Requirement:** Multiple application instances must be distinguishable and
   traffic must reach both.
 * **Evidence:** `INSTANCE_ID` configuration in `docker-compose.yml`,
-  `/instance` endpoint in `app/server.py`, NGINX upstream configuration.
+  `/instance` endpoint in `app/server.py`, and NGINX upstream configuration.
 * **Verification:** `./validate.py` and repeated `/instance` requests.
 * **Relevant commits:** `796514e`, `5ea6189`
 * **Video timestamp:** PENDING.
@@ -81,9 +84,10 @@ pending until the challenge is performed in the final video working copy.
 ### Health and readiness
 
 * **Requirement:** Services must expose meaningful health/readiness behavior.
-* **Evidence:** `app/server.py`, Compose healthchecks, `validate.py`.
-* **Verification:** `./validate.py`
-* **Relevant commit:** `5ea6189`
+* **Evidence:** `app/server.py`, Compose healthchecks, `validate.py`
+* **Verification:** `./validate.py` completed with
+  `=== VALIDATION PASSED ===`.
+* **Relevant commits:** `ca25803`, `5ea6189`, `ce76f89`
 * **Video timestamp:** PENDING.
 
 ### Network isolation
@@ -105,9 +109,10 @@ pending until the challenge is performed in the final video working copy.
 ### PostgreSQL persistence
 
 * **Requirement:** PostgreSQL records must survive container recreation.
-* **Evidence:** named `postgres-data` volume in `docker-compose.yml`.
-* **Verification:** Record creation, PostgreSQL container removal/recreation,
-  and subsequent `/records` check.
+* **Evidence:** Named `postgres-data` volume in `docker-compose.yml`.
+* **Verification:** `app-01`, `app-02`, and `postgres` were recreated with
+  `--force-recreate` while the named volume was retained. The existing
+  application records remained available through `/records` after recreation.
 * **Relevant commit:** `6738918`
 * **Video timestamp:** PENDING.
 
@@ -115,8 +120,8 @@ pending until the challenge is performed in the final video working copy.
 
 * **Requirement:** Redis persistence must survive Redis container recreation.
 * **Evidence:** Redis AOF configuration and named `redis-data` volume.
-* **Verification:** Counter value was checked before and after Redis container
-  recreation using the persistent volume.
+* **Verification:** Counter persistence was checked before and after Redis
+  container recreation using the persistent volume.
 * **Relevant commits:** `c6fc487`, `04b95ad`
 * **Video timestamp:** PENDING.
 
@@ -124,17 +129,22 @@ pending until the challenge is performed in the final video working copy.
 
 * **Requirement:** Provide a reproducible PostgreSQL backup procedure.
 * **Evidence:** `backup.sh`
-* **Verification:** `./backup.sh` successfully generated a SQL backup.
+* **Verification:** `./backup.sh` successfully generated
+  `backups/barq_tasks_20260917_004903.sql`. The SQL dump was inspected and
+  contained the expected `records` table/data statements.
 * **Relevant commit:** `f88b64a`
 * **Video timestamp:** PENDING.
 
 ### PostgreSQL restore
 
 * **Requirement:** Demonstrate that a PostgreSQL backup can restore data.
-* **Evidence:** `restore.sh`, backup SQL file kept locally under ignored
-  `backups/`.
-* **Verification:** Controlled database recreation followed by SQL restore and
-  `/records` verification.
+* **Evidence:** `restore.sh` and the locally generated SQL backup under the
+  ignored `backups/` directory.
+* **Verification:** A controlled database named `barq_restore_test` was
+  created, the generated SQL backup was restored into it successfully, and
+  `SELECT * FROM records ORDER BY id` verified the restored records. The
+  temporary database was then removed. The production `barq_tasks` database
+  was not replaced during this verification.
 * **Relevant commit:** `c5cac8d`
 * **Video timestamp:** PENDING.
 
@@ -143,20 +153,20 @@ pending until the challenge is performed in the final video working copy.
 * **Requirement:** Stop one backend, demonstrate continued availability,
   restore it, and demonstrate recovery.
 * **Evidence:** `failure_test.py`
-* **Verification:** Baseline 20/20 success; during app-01 stop 20/20 success
-  through app-02; after recovery 20/20 success with both instances receiving
-  traffic.
-* **Relevant commit:** `d906c2b`
+* **Verification:** Baseline 20/20 requests succeeded; during the `app-01`
+  failure 20/20 requests continued through `app-02`; after recovery, 20/20
+  requests succeeded with both application instances receiving traffic.
+* **Relevant commits:** `d906c2b`, `6083463`
 * **Video timestamp:** PENDING.
 
 ### Automated environment validation
 
-* **Requirement:** Validation must produce PASS/FAIL results and nonzero exit
-  status on failure.
+* **Requirement:** Validation must produce PASS/FAIL results and a nonzero
+  exit status on failure.
 * **Evidence:** `validate.py`
 * **Verification:** `./validate.py` completed with
   `=== VALIDATION PASSED ===`.
-* **Relevant commit:** `5ea6189`
+* **Relevant commits:** `5ea6189`, `ce76f89`
 * **Video timestamp:** PENDING.
 
 ### Failure-test automation
@@ -165,7 +175,7 @@ pending until the challenge is performed in the final video working copy.
 * **Evidence:** `failure_test.py`
 * **Verification:** `./failure_test.py` completed with
   `=== FAILURE/RECOVERY TEST PASSED ===`.
-* **Relevant commit:** `d906c2b`
+* **Relevant commits:** `d906c2b`, `6083463`
 * **Video timestamp:** PENDING.
 
 ### Historical log analysis
@@ -175,8 +185,8 @@ pending until the challenge is performed in the final video working copy.
 * **Evidence:** `log_analysis.md`, `logs/access.log`, `logs/error.log`,
   `logs/application.log`
 * **Verification:** Reproducible Bash/Python analysis documented in
-  `log_analysis.md`.
-* **Relevant commit:** `7183645`
+  `log_analysis.md`, including request-ID correlation and retry handling.
+* **Relevant commits:** `7183645`, `8972eab`
 * **Video timestamp:** PENDING.
 
 ### Technical decisions
@@ -210,8 +220,23 @@ pending until the challenge is performed in the final video working copy.
 * **Requirement:** Required architecture diagram showing the final
   three-instance system, public port 8090, request flow, ports, networks,
   storage, health/readiness, and remaining single points of failure.
-* **Evidence:** `architecture.png` or `architecture.pdf` at repository root.
-* **Current status:** NOT YET CREATED.
+* **Evidence:** `architecture.pdf` at repository root.
+* **Current status:** Diagram file exists and was committed in `e6c7835`.
+  Final consistency with the three-instance/8090 video state must be verified
+  before submission.
+* **Video timestamp:** PENDING.
+
+### CI
+
+* **Requirement:** CI must run on push/PR, validate syntax and Compose
+  configuration, build and start the environment, wait for service health,
+  run validation, and fail when validation fails.
+* **Evidence:** `.github/workflows/ci.yml`
+* **Verification:** The current two-instance/8080 CI workflow completed
+  successfully on GitHub Actions after the service-health wait logic was fixed.
+* **Relevant commit:** `cade98c`
+* **Final matching CI run:** PENDING — a new successful run must match the
+  final three-instance/8090 configuration after the video changes.
 * **Video timestamp:** PENDING.
 
 ## Final video evidence
@@ -249,6 +274,6 @@ Before submission, verify that all four representations agree:
 The final demonstrated architecture must contain three Flask instances and use
 public port `8090`.
 
-No video timestamp, receipt ID, final hash, CI URL, or repository URL should
-be fabricated. Populate those fields only from the actual final run and
-recording.
+No video timestamp, receipt ID, final hash, CI URL, or repository URL should be
+fabricated. Populate those fields only from the actual final run and recording.
+#####################################
