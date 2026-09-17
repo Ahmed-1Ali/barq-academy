@@ -84,6 +84,17 @@ services:
     environment:
       <<: *app-env
       INSTANCE_ID: "app-02"
+  app-03:
+    <<: *app
+    container_name: app-03
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      <<: *app-env
+      INSTANCE_ID: "app-03"    
   nginx:
     image: nginx:1.28-alpine@sha256:a8b39bd9cf0f83869a2162827a0caf6137ddf759d50a171451b335cecc87d236
     container_name: nginx
@@ -95,6 +106,12 @@ services:
           memory: 256M
     ports: ["127.0.0.1:${PUBLIC_PORT:-8080}:80"]
     volumes: ["./nginx/nginx.conf:/etc/nginx/nginx.conf:ro"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
     depends_on:
       app-01:
         condition: service_healthy
